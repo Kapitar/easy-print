@@ -1,4 +1,8 @@
-export default function Navbar() {
+import { auth, signIn, signOut } from "@/auth";
+
+export default async function Navbar() {
+  const session = await auth();
+
   return (
     <nav className="bg-gray-800">
       <div className="mx-auto container">
@@ -73,12 +77,35 @@ export default function Navbar() {
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <div className="relative ml-3">
-              <button
-                type="button"
-                className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-              >
-                Log out
-              </button>
+              {session ? (
+                <form
+                  action={async () => {
+                    "use server";
+                    await signOut();
+                  }}
+                >
+                  <button
+                    type="submit"
+                    className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                  >
+                    Log out
+                  </button>
+                </form>
+              ) : (
+                <form
+                  action={async () => {
+                    "use server";
+                    await signIn("google");
+                  }}
+                >
+                  <button
+                    type="submit"
+                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                  >
+                    Log in
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </div>
