@@ -2,9 +2,7 @@ import { db } from "@/db";
 import { join } from "path";
 import { writeFile } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
-import {
-  printFile,
-} from "node-cups";
+import { printFile } from "node-cups";
 
 export async function POST(
   request: NextRequest,
@@ -24,7 +22,7 @@ export async function POST(
   }
 
   const data = await request.formData();
-  const file: File | null = data.get('file') as unknown as File;
+  const file: File | null = data.get("file") as unknown as File;
   if (!file) {
     return NextResponse.json({ error: "Invalid File" }, { status: 400 });
   }

@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
+import { useState } from "react";
 
 export default function PrinterCard() {
   const [file, setFile] = useState<File>();
@@ -11,10 +11,10 @@ export default function PrinterCard() {
 
     try {
       const data = new FormData();
-      data.set('file', file);
+      data.set("file", file);
       const res = await fetch("/api/printers/1", {
         method: "POST",
-        body: data
+        body: data,
       });
 
       if (!res.ok) throw new Error(await res.text());
