@@ -20,6 +20,7 @@ export const requestsTable = sqliteTable("requests_table", {
   id: int().primaryKey({ autoIncrement: true }),
   filePath: text().notNull(),
   userId: int(),
+  printerId: int(),
 });
 
 export const requestsRelations = relations(requestsTable, ({ one }) => ({
