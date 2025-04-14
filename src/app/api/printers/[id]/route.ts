@@ -49,8 +49,9 @@ export async function POST(
 
   const io = getIO();
   io.emit("print", {
-    buffer,
-    printerName,
+    buffer: buffer,
+    printerName: printerName,
+    fileName: file.name,
   });
 
   return NextResponse.json({ message: "Success", printerName });

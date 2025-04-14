@@ -1,5 +1,7 @@
-import { printBuffer } from "node-cups";
-import {io} from "socket.io-client"
+import { printFile } from "node-cups";
+import { join } from "path";
+import { writeFile } from "fs/promises";
+import { io } from "socket.io-client";
 
 const ioClient = io("http://localhost:3000");
 
@@ -12,8 +14,11 @@ ioClient.on("disconnect", () => {
 });
 
 ioClient.on("print", async (data) => {
+  const uploadDir = join(process.cwd(), "files", data.fileName);
+  console.log(uploadDir);
+  await writeFile(uploadDir, data.buffer);
+
   try {
-    const buffer = data.buffer;
     const params = {
       printer: data.printerName,
       copies: 1,
@@ -21,7 +26,7 @@ ioClient.on("print", async (data) => {
         media: "A4",
       },
     };
-    const result = await printBuffer(buffer, params);
+    const result = await printFile(uploadDir, params);
     console.log(result);
   } catch (error) {
     console.error("Print error:", error);
