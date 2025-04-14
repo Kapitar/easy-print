@@ -18,6 +18,9 @@ export default function PrinterCard() {
       });
 
       if (!res.ok) throw new Error(await res.text());
+
+      // Refresh the page after a successful submission
+      window.location.reload();
     } catch (e: any) {
       console.log(e);
     }

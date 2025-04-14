@@ -1,4 +1,3 @@
-import { db } from "@/db";
 import { join } from "path";
 import { writeFile } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
@@ -6,6 +5,7 @@ import { printFile } from "node-cups";
 import { auth } from "@/auth"; // Import your auth config
 import { getPrinterById } from "@/db/repositories/printerRepository";
 import { createRequest } from "@/db/repositories/requestRepository";
+import { getIO } from "@/socket";
 
 export async function POST(
   request: NextRequest,
@@ -13,7 +13,7 @@ export async function POST(
 ) {
   const session = await auth();
   console.log(session);
-  
+
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -25,7 +25,10 @@ export async function POST(
 
   const printer = await getPrinterById(printerId);
   if (!printer) {
-    return NextResponse.json({ error: "Printer with given id doesn't exist" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Printer with given id doesn't exist" },
+      { status: 400 }
+    );
   }
 
   const data = await request.formData();
@@ -43,15 +46,12 @@ export async function POST(
 
   const printerName = printer.name;
   createRequest(uploadDir, session?.user?.email ?? "", printerId);
-  
-  const printParams = {
-    printer: printerName,
-    copies: 1,
-    printerOptions: {
-      media: "A4",
-    },
-  };
-  const result = await printFile(uploadDir, printParams);
-  
+
+  const io = getIO();
+  io.emit("print", {
+    buffer,
+    printerName,
+  });
+
   return NextResponse.json({ message: "Success", printerName });
 }
