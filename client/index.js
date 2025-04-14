@@ -11,7 +11,7 @@ ioClient.on("disconnect", () => {
   console.log("Disconnected from server");
 });
 
-ioClient.on("print", async (data: any) => {
+ioClient.on("print", async (data) => {
   try {
     const buffer = data.buffer;
     const params = {
