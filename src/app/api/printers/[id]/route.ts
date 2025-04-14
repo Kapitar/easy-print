@@ -43,6 +43,15 @@ export async function POST(
 
   const printerName = printer.name;
   createRequest(uploadDir, session?.user?.email ?? "", printerId);
-
+  
+  const printParams = {
+    printer: printerName,
+    copies: 1,
+    printerOptions: {
+      media: "A4",
+    },
+  };
+  const result = await printFile(uploadDir, printParams);
+  
   return NextResponse.json({ message: "Success", printerName });
 }

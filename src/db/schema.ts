@@ -1,5 +1,6 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { relations } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 
 export const printersTable = sqliteTable("printers_table", {
   id: int().primaryKey({ autoIncrement: true }),
@@ -21,6 +22,10 @@ export const requestsTable = sqliteTable("requests_table", {
   filePath: text().notNull(),
   userId: int(),
   printerId: int(),
+  createdAt: text("timestamp")
+    .notNull()
+    .default(sql`(current_timestamp)`),
+  status: text().notNull().default("Pending"),
 });
 
 export const requestsRelations = relations(requestsTable, ({ one }) => ({
