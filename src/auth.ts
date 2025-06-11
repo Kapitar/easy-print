@@ -13,7 +13,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (!isCreated) {
         await createUser(profile.name ?? profile.email, profile.email);
       }
-      return true; // Allow sign in
+      return true;
     },
   },
 });
