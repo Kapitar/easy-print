@@ -27,7 +27,7 @@ ioClient.on("print", async (data) => {
       },
     };
     const result = await printFile(uploadDir, params);
-    console.log(result);
+    
   } catch (error) {
     console.error("Print error:", error);
   }

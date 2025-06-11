@@ -1,7 +1,6 @@
 import { join } from "path";
 import { writeFile } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
-import { printFile } from "node-cups";
 import { auth } from "@/auth"; // Import your auth config
 import { getPrinterById } from "@/db/repositories/printerRepository";
 import { createRequest } from "@/db/repositories/requestRepository";
